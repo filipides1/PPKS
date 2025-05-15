@@ -1,0 +1,27 @@
+<div class="auction-list">
+    <div *ngFor="let item of auctionItems" class="auction-card">
+        <div class="card-content">
+            <div class="card-header">
+                <h3>{{ item.name }}</h3>
+                <span class="favorite-star" [class.active]="item.isFavorite" (click)="toggleFavorite(item, $event)">
+                    ★
+                </span>
+            </div>
+            <p>{{ item.description }}</p>
+            <p>Početna cijena: {{ item.startingPrice }}€</p>
+            <p>Trenutna cijena: {{ item.currentPrice }}€</p>
+            <p>{{ isEndedAuctions ? 'Aukcija završila:' : 'Aukcija završava:' }}
+                {{ item.endTime | date:'dd.MM.yyyy; HH:mm' }}</p>
+
+            <p *ngIf="isEndedAuctions && item.winnerUsername">Pobjednik: {{ item.winnerUsername }}</p>
+        </div>
+
+        <button type="button" (click)="viewDetails(item.id, $event)" class="details-button">
+            Detalji
+        </button>
+    </div>
+
+    <div *ngIf="auctionItems.length === 0" class="no-auctions">
+        <p>Nema dostupnih aukcija.</p>
+    </div>
+</div>

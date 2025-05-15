@@ -1,0 +1,42 @@
+<div class="auth-container">
+    <div class="auth-form">
+        <h1>Registracija</h1>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="username">Korisničko ime</label>
+                <input type="text" id="username" formControlName="username" class="form-control"
+                    placeholder="Unesite korisničko ime">
+                <div *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.errors"
+                    class="error-message">
+                    <span *ngIf="registerForm.get('username')?.errors?.['required']">Korisničko ime je obavezno.</span>
+                    <span *ngIf="registerForm.get('username')?.errors?.['minlength']">Korisničko ime mora imati najmanje
+                        4 znaka.</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Lozinka</label>
+                <input type="password" id="password" formControlName="password" class="form-control"
+                    placeholder="Unesite lozinku">
+                <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors"
+                    class="error-message">
+                    <span *ngIf="registerForm.get('password')?.errors?.['required']">Lozinka je obavezna.</span>
+                    <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Lozinka mora imati najmanje 6
+                        znakova.</span>
+                </div>
+            </div>
+
+            <div *ngIf="error" class="error-message global-error">
+                {{ error }}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" [disabled]="registerForm.invalid || loading" class="btn-submit">
+                    {{ loading ? 'Registracija u tijeku...' : 'Registriraj se' }}
+                </button>
+                <a routerLink="/login" class="btn-secondary">Već imate račun? Prijavite se</a>
+            </div>
+        </form>
+    </div>
+</div>

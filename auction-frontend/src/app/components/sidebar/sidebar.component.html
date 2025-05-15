@@ -1,0 +1,29 @@
+<nav class="sidebar">
+    <ul>
+        <li>
+            <button mat-raised-button class="btn-blue" (click)="navigateToAll()">
+                <mat-icon>list</mat-icon> Aktivne aukcije
+            </button>
+        </li>
+        <li>
+            <button mat-raised-button class="btn-blue" (click)="navigateToEnded()">
+                <mat-icon>gavel</mat-icon> Završene aukcije
+            </button>
+        </li>
+        <li>
+            <button mat-raised-button class="btn-blue" (click)="navigateToMine()">
+                <mat-icon>person</mat-icon> Omiljene aukcije
+            </button>
+        </li>
+        <li>
+            <button mat-raised-button class="btn-blue" (click)="navigateToWon()">
+                <mat-icon>emoji_events</mat-icon> Moje pobjede
+            </button>
+        </li>
+        <li>
+            <button mat-raised-button class="btn-blue" (click)="navigateToCreate()">
+                <mat-icon>add_circle</mat-icon> Nova aukcija
+            </button>
+        </li>
+    </ul>
+</nav>

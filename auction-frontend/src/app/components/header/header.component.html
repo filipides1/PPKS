@@ -1,0 +1,16 @@
+<header class="app-header">
+    <div class="logo">
+        <img src="auction-hammer-blue.svg" alt="Auction hammer" class="logo-icon">
+        <h1>Aukcijska Kuća</h1>
+    </div>
+    <div class="user-actions">
+        <ng-container *ngIf="authService.isLoggedIn(); else loginButtons">
+            <span class="username">{{ authService.getUsername() }}</span>
+            <button class="logout-btn" (click)="logout()">Odjava</button>
+        </ng-container>
+        <ng-template #loginButtons>
+            <a routerLink="/login" class="login-btn">Prijava</a>
+            <a routerLink="/register" class="register-btn">Registracija</a>
+        </ng-template>
+    </div>
+</header>

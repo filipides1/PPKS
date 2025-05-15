@@ -1,0 +1,15 @@
+<div class="app-container">
+    <app-sidebar class="app-sidebar" />
+    <div class="main-content">
+        <app-header class="app-header" />
+        <div class="content-wrapper">
+            <div class="all-auctions-container">
+                <router-outlet></router-outlet>
+                <h1>Aktivne aukcije</h1>
+                <app-auction-list />
+            </div>
+        </div>
+        <app-footer class="app-footer" />
+    </div>
+
+</div>

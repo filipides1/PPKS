@@ -1,0 +1,13 @@
+<div class="app-container">
+    <app-sidebar class="app-sidebar"></app-sidebar>
+    <div class="main-content">
+        <app-header class="app-header"></app-header>
+        <div class="content-wrapper">
+            <div class="my-auctions-container">
+                <h1>Omiljene aukcije</h1>
+                <app-auction-list [favoritesOnly]="true"></app-auction-list>
+            </div>
+        </div>
+        <app-footer class="app-footer"></app-footer>
+    </div>
+</div>
