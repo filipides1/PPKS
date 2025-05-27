@@ -19,11 +19,9 @@ import java.util.function.Function;
 @Component
 public class JwtTokenUtil {
 
-    // Use a consistent JWT secret that won't change between app restarts
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    // Define token validity (24 hours)
     private final long JWT_TOKEN_VALIDITY = 24 * 60 * 60 * 1000; // 24 hours
 
     public String extractUsername(String token) {
@@ -45,7 +43,6 @@ public class JwtTokenUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        // Important: Use the same signing key for verification that was used for creation
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
@@ -54,7 +51,6 @@ public class JwtTokenUtil {
     }
 
     private Key getSigningKey() {
-        // Convert the secret string to appropriate key format
         byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
     }

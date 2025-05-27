@@ -18,9 +18,6 @@ public class ChatService {
     private final AuctionItemRepository auctionItemRepository;
     private final SimpMessagingTemplate messagingTemplate;
 
-    // Temporary username for development
-    private static final String TEMP_USERNAME = "user1";
-
     public ChatService(ChatMessageRepository chatMessageRepository,
                        AuctionItemRepository auctionItemRepository,
                        SimpMessagingTemplate messagingTemplate) {
@@ -40,21 +37,17 @@ public class ChatService {
                 .collect(Collectors.toList());
     }
 
-    // Update the sendChatMessage method to use authentication
     public ChatMessageResponse sendChatMessage(Long auctionId, String content, String username) {
-        // Check if user is authenticated
         if (username == null || username.equals("anonymousUser")) {
             throw new RuntimeException("User not authenticated");
         }
 
-        // Rest of method remains the same
         AuctionItem auctionItem = auctionItemRepository.findById(auctionId)
                 .orElseThrow(() -> new RuntimeException("Auction item not found"));
 
         ChatMessage chatMessage = new ChatMessage(content, username, auctionItem);
         ChatMessage savedMessage = chatMessageRepository.save(chatMessage);
 
-        // Create response DTO
         ChatMessageResponse chatMessageResponse = new ChatMessageResponse(
                 savedMessage.getId(),
                 savedMessage.getContent(),
@@ -62,7 +55,6 @@ public class ChatService {
                 savedMessage.getTimestamp()
         );
 
-        // Broadcast the new message to all subscribers
         messagingTemplate.convertAndSend(
                 "/topic/auctions/" + auctionId + "/chat",
                 chatMessageResponse);

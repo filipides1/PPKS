@@ -54,7 +54,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                             if (username != null) {
                                 User user = userRepository.findByUsername(username).orElse(null);
                                 if (user != null) {
-                                    // Create the principal with the username
                                     accessor.setUser(() -> username);
                                 }
                             }

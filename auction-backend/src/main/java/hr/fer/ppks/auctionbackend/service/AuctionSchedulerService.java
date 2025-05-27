@@ -26,16 +26,13 @@ public class AuctionSchedulerService {
         List<AuctionItem> endedAuctions = auctionItemService.findEndedButNotCompletedAuctions();
 
         for (AuctionItem auction : endedAuctions) {
-            // Find the highest bid for this auction
             List<Bid> bids = bidRepository.findByAuctionItemIdOrderByAmountDesc(auction.getId());
 
             if (!bids.isEmpty()) {
-                // Set the winner to the highest bidder
                 Bid winningBid = bids.get(0);
                 auction.setWinnerUsername(winningBid.getUsername());
             }
 
-            // Mark as completed
             auction.setIsCompleted(true);
             auctionItemService.saveAuctionItem(auction);
         }

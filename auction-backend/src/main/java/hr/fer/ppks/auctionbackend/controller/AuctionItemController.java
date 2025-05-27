@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200") // da Angular može pristupiti
+@CrossOrigin(origins = "http://localhost:4200") 
 public class AuctionItemController {
 
     private final AuctionItemService auctionItemService;
@@ -24,23 +24,17 @@ public class AuctionItemController {
         this.favoriteService = favoriteService;
     }
 
-    // Then update your getAllAuctionItems method
-    // Update the getAllAuctionItems method to mark favorites based on authenticated user
     @GetMapping("/auction/{id}")
     public AuctionItem getAuctionItemById(@PathVariable Long id) {
         AuctionItem item = auctionItemService.getAuctionItemById(id)
                 .orElseThrow(() -> new RuntimeException("Auction item not found"));
-
         try {
-            // Check if this item is in favorites - safely handle missing authentication
             List<AuctionItem> favoriteItems = favoriteService.getFavoriteAuctionItems();
             boolean isFavorite = favoriteItems.stream()
                     .anyMatch(favItem -> favItem.getId().equals(id));
 
             item.setIsFavorite(isFavorite);
         } catch (Exception e) {
-            // If there's an error checking favorites, just continue
-            // without marking as favorite
             item.setIsFavorite(false);
         }
 
@@ -52,13 +46,11 @@ public class AuctionItemController {
         List<AuctionItem> allItems = auctionItemService.getAllCurrentAuctionItems();
 
         try {
-            // Get the user's favorites to mark items - safely handle missing authentication
             List<AuctionItem> favoriteItems = favoriteService.getFavoriteAuctionItems();
             List<Long> favoriteIds = favoriteItems.stream()
                     .map(AuctionItem::getId)
                     .collect(Collectors.toList());
 
-            // Mark items as favorites
             allItems.forEach(item -> {
                 if (favoriteIds.contains(item.getId())) {
                     item.setIsFavorite(true);
@@ -67,8 +59,6 @@ public class AuctionItemController {
                 }
             });
         } catch (Exception e) {
-            // If there's an error checking favorites, just continue
-            // without marking any as favorites
             allItems.forEach(item -> item.setIsFavorite(false));
         }
 
@@ -89,10 +79,8 @@ public class AuctionItemController {
         return auctionItemService.findAuctionsWonByUser(principal.getName());
     }
 
-    // Make sure this endpoint is properly implemented in your controller
     @PostMapping("/auction-items")
     public AuctionItem createAuctionItem(@RequestBody AuctionItem item) {
-        // Set current price to starting price if not set
         if (item.getCurrentPrice() == null) {
             item.setCurrentPrice(item.getStartingPrice());
         }

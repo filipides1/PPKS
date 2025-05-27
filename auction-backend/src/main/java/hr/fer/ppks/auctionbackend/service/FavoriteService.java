@@ -31,13 +31,9 @@ public class FavoriteService {
         this.userRepository = userRepository;
     }
 
-    /**
-     * Gets the current user ID or returns null if not authenticated
-     */
     private Optional<Long> getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // Check if there's an authenticated user
         if (authentication == null || !authentication.isAuthenticated() ||
                 "anonymousUser".equals(authentication.getName())) {
             return Optional.empty();
@@ -49,10 +45,8 @@ public class FavoriteService {
     }
 
     public List<AuctionItem> getFavoriteAuctionItems() {
-        // Get the current user ID if available
         Optional<Long> userIdOpt = getCurrentUserId();
 
-        // If no user is authenticated, return empty list
         if (userIdOpt.isEmpty()) {
             return new ArrayList<>();
         }
@@ -63,12 +57,10 @@ public class FavoriteService {
                 .map(Favorite::getAuctionItemId)
                 .collect(Collectors.toList());
 
-        // Fetch the actual auction items
         List<AuctionItem> favoriteItems = new ArrayList<>();
         if (!favoriteAuctionIds.isEmpty()) {
             favoriteItems = auctionItemRepository.findAllById(favoriteAuctionIds);
 
-            // Mark these items as favorites in the response
             favoriteItems.forEach(item -> item.setIsFavorite(true));
         }
 
@@ -76,16 +68,13 @@ public class FavoriteService {
     }
 
     public void addToFavorites(Long auctionItemId) {
-        // Get the current user ID if available
         Optional<Long> userIdOpt = getCurrentUserId();
 
-        // If no user is authenticated, do nothing
         if (userIdOpt.isEmpty()) {
             return;
         }
 
         Long userId = userIdOpt.get();
-        // Check if it's already a favorite
         if (favoriteRepository.findByUserIdAndAuctionItemId(userId, auctionItemId).isEmpty()) {
             Favorite favorite = new Favorite(userId, auctionItemId);
             favoriteRepository.save(favorite);
@@ -94,10 +83,8 @@ public class FavoriteService {
 
     @Transactional
     public void removeFromFavorites(Long auctionItemId) {
-        // Get the current user ID if available
         Optional<Long> userIdOpt = getCurrentUserId();
 
-        // If no user is authenticated, do nothing
         if (userIdOpt.isEmpty()) {
             return;
         }

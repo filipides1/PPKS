@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableScheduling // Uncomment this line if you want to enable scheduling
+@EnableScheduling
 public class AuctionBackendApplication {
 
     public static void main(String[] args) {

@@ -22,9 +22,6 @@ public class BidService {
     private final AuctionItemRepository auctionItemRepository;
     private final SimpMessagingTemplate messagingTemplate;
 
-    // Temporary username for development
-    private static final String TEMP_USERNAME = "user1";
-
     public BidService(BidRepository bidRepository,
                       AuctionItemRepository auctionItemRepository,
                       SimpMessagingTemplate messagingTemplate,
@@ -46,28 +43,22 @@ public class BidService {
                 .collect(Collectors.toList());
     }
 
-    // Update placeBid method
-// Update the placeBid method to use authentication
     @Transactional
     public BidResponse placeBid(Long auctionId, Double amount, String username) {
         // Fetch the auction item
         AuctionItem auctionItem = auctionItemRepository.findById(auctionId)
                 .orElseThrow(() -> new RuntimeException("Auction item not found"));
 
-        // Validate the bid amount
         if (amount <= auctionItem.getCurrentPrice()) {
             throw new IllegalArgumentException("Bid amount must be greater than current price");
         }
 
-        // Create and save the bid
         Bid bid = new Bid(amount, username, auctionItem);
         Bid savedBid = bidRepository.save(bid);
 
-        // Update the auction item's current price
         auctionItem.setCurrentPrice(amount);
         auctionItemRepository.save(auctionItem);
 
-        // Create response DTO
         BidResponse bidResponse = new BidResponse(
                 savedBid.getId(),
                 savedBid.getAmount(),
@@ -75,7 +66,6 @@ public class BidService {
                 savedBid.getTimestamp()
         );
 
-        // Broadcast the new bid to all subscribers
         messagingTemplate.convertAndSend(
                 "/topic/auctions/" + auctionId + "/bids",
                 bidResponse);
