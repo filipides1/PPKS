@@ -1,5 +1,6 @@
 # Programska potpora komunikacijskim sustavima
 Ovo je moj projekt iz predmeta "Programska potpora komunkikacijskim sustavima" na Fakultetu elektrotehnike i računarstva u Zagrebu.
+Napravljena je aukcijska kuća s mogućnosti nadmetanja u stvarnom vremenu uz pomoć tehnologije WebSocket.
 
 # Instalacija
 Frontend - potrebno se pozicionirati u frontend direktorij (`auction-frontend`) i pokrenuti:
